@@ -1,5 +1,7 @@
 package jurial_obo_system_oop;
 
+import javax.swing.JOptionPane;
+
 public class sample extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(sample.class.getName());
@@ -58,8 +60,7 @@ public class sample extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginMouseClicked
-        LoginRegister login = new LoginRegister();
-        login.studentLogin(username.getText().trim(), password.getText().trim());
+    JOptionPane.showMessageDialog(rootPane, "Hello World!");
     }//GEN-LAST:event_loginMouseClicked
 
     public static void main(String args[]) {

@@ -386,7 +386,7 @@ public class createStudentAccount extends javax.swing.JFrame {
             return;
         }
         if (confirmPassword.equals(password)) {
-            LoginRegister register = new LoginRegister(null);
+            Login register = new Login(null);
             register.createAccount(fullName, username, password);
             defaultFields();
             this.dispose();

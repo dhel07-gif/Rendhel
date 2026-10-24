@@ -10,7 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
-public class LoginRegister {
+public class Login {
 
     String[] defUser = {"Username", "Admin Username"};
     String[] defPass = {"Password", "Admin Password"};
@@ -22,7 +22,7 @@ public class LoginRegister {
 
     private final mainPage loginPage;
 
-    public LoginRegister(mainPage loginPage) {
+    public Login(mainPage loginPage) {
         this.loginPage = loginPage;
     }
     
@@ -71,8 +71,8 @@ public class LoginRegister {
                     if (rl.equalsIgnoreCase("Student")) {
                         JOptionPane.showMessageDialog(null, "Logged in Successfully!");
                         loginPage.dispose();
-                        studentInterface sInterface = new studentInterface();
-                        sInterface.setVisible(true);
+                        CanteenOrderDashboard COD = new CanteenOrderDashboard();
+                        COD.setVisible(true);
                     } else {
                         JOptionPane.showMessageDialog(null, "Access Denied! This login is restricted to students only.");
                     }

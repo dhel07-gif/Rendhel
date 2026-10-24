@@ -698,7 +698,7 @@ public class mainPage extends javax.swing.JFrame {
     }//GEN-LAST:event_studentPasswordKeyTyped
 
     private void studentLoginButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_studentLoginButtonMouseClicked
-        LoginRegister login = new LoginRegister(this);
+        Login login = new Login(this);
         login.studentLogin(studentUsername.getText().trim(), studentPassword.getText().trim());
     }//GEN-LAST:event_studentLoginButtonMouseClicked
 
@@ -760,7 +760,7 @@ public class mainPage extends javax.swing.JFrame {
     }//GEN-LAST:event_adminPasswordKeyTyped
 
     private void adminLoginButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_adminLoginButtonMouseClicked
-        LoginRegister login = new LoginRegister(this);
+        Login login = new Login(this);
         login.adminLogin(adminUsername.getText().trim(), adminPassword.getText().trim());
     }//GEN-LAST:event_adminLoginButtonMouseClicked
 
@@ -811,7 +811,7 @@ public class mainPage extends javax.swing.JFrame {
     }//GEN-LAST:event_staffPasswordKeyTyped
 
     private void staffLoginButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_staffLoginButtonMouseClicked
-        LoginRegister login = new LoginRegister(this);
+        Login login = new Login(this);
         login.staffLogin(staffUsername.getText().trim(), staffPassword.getText().trim());
     }//GEN-LAST:event_staffLoginButtonMouseClicked
 

@@ -1,9 +1,15 @@
 package jurial_obo_system_oop;
 
 import java.awt.Color;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class studentInterface extends javax.swing.JFrame {
 
+    DB_CONNECTION DB = new DB_CONNECTION();
     Color beige = new Color(229, 221, 209);
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(studentInterface.class.getName());
@@ -14,7 +20,56 @@ public class studentInterface extends javax.swing.JFrame {
         setSize(1200, 775);
         setTitle("Student Interface");
         getContentPane().setBackground(beige);
+        menuItemsTable.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 14));
+        menuItemsTable.setRowHeight(28);
+        menuItemsTable.getTableHeader().setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 14));
+        loadMenuItems();
+        sortComboBox.addActionListener(e -> {
+            // Re-run the search method so it pulls data with the newly selected sorting order
+            findButtonMouseClicked(null);
+        });
+    }
 
+    private void loadMenuItems() {
+        searchItemField.setText(""); // Clear search field on full load if desired
+        DefaultTableModel model = (DefaultTableModel) menuItemsTable.getModel();
+        model.setRowCount(0);
+
+        String orderBy = " ORDER BY item_id ASC";
+        int selectedSortIndex = sortComboBox.getSelectedIndex();
+
+        switch (selectedSortIndex) {
+            case 0:
+                orderBy = " ORDER BY name ASC";
+                break;
+            case 1:
+                orderBy = " ORDER BY name DESC";
+                break;
+            case 2:
+                orderBy = " ORDER BY price ASC";
+                break;
+            case 3:
+                orderBy = " ORDER BY price DESC";
+                break;
+        }
+
+        String query = "SELECT item_id, name, category, price, stock_quantity, is_available FROM menu_items" + orderBy;
+
+        try (PreparedStatement pst = DB.con.prepareStatement(query); ResultSet rs = pst.executeQuery()) {
+            while (rs.next()) {
+                Object[] row = {
+                    rs.getInt("item_id"),
+                    rs.getString("name"),
+                    rs.getString("category"),
+                    rs.getDouble("price"),
+                    rs.getInt("stock_quantity"),
+                    rs.getBoolean("is_available")
+                };
+                model.addRow(row);
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Load Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -35,10 +90,11 @@ public class studentInterface extends javax.swing.JFrame {
         parentPanel = new javax.swing.JPanel();
         menuItemsPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        searchItemField = new javax.swing.JTextField();
+        findButton = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        menuItemsTable = new javax.swing.JTable();
+        sortComboBox = new javax.swing.JComboBox<>();
         orderPanel = new javax.swing.JPanel();
         historyPanel = new javax.swing.JPanel();
 
@@ -233,26 +289,40 @@ public class studentInterface extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(51, 51, 51));
         jLabel1.setText("Search Item");
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton1.setText("Find");
+        findButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        findButton.setText("Find");
+        findButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                findButtonMouseClicked(evt);
+            }
+        });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        menuItemsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Item Name", "Category", "Price", "Stock Available"
+                "Item ID", "Item Name", "Category", "Price", "Stock Quantity", "is Available"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Double.class, java.lang.Integer.class
+                java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Double.class, java.lang.Integer.class, java.lang.Boolean.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         });
-        jScrollPane2.setViewportView(jTable1);
+        jScrollPane2.setViewportView(menuItemsTable);
+
+        sortComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Name: A - Z", "Name: Z - A", "Price: ASCEND", "Price: DESCEND" }));
 
         javax.swing.GroupLayout menuItemsPanelLayout = new javax.swing.GroupLayout(menuItemsPanel);
         menuItemsPanel.setLayout(menuItemsPanelLayout);
@@ -261,14 +331,17 @@ public class studentInterface extends javax.swing.JFrame {
             .addGroup(menuItemsPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(menuItemsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addGroup(menuItemsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(menuItemsPanelLayout.createSequentialGroup()
-                            .addComponent(jTextField1)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jButton1))
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(338, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2)
+                    .addGroup(menuItemsPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(menuItemsPanelLayout.createSequentialGroup()
+                        .addComponent(searchItemField, javax.swing.GroupLayout.PREFERRED_SIZE, 522, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(findButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 214, Short.MAX_VALUE)
+                        .addComponent(sortComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         menuItemsPanelLayout.setVerticalGroup(
             menuItemsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -277,8 +350,9 @@ public class studentInterface extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(menuItemsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(searchItemField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(findButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(sortComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(280, Short.MAX_VALUE))
@@ -340,14 +414,14 @@ public class studentInterface extends javax.swing.JFrame {
         cl.show(parentPanel, "card3");
         setTitle("Orders List");
         //orders
-        ordersPanelBG.setBackground(new Color(229,221,209));
-        ordersLabel.setForeground(new Color(51,51,51));
+        ordersPanelBG.setBackground(new Color(229, 221, 209));
+        ordersLabel.setForeground(new Color(51, 51, 51));
         //menu
-        menuPanelBG.setBackground(new Color(115,138,110));
-        menuItemLabel.setForeground(new Color(255,255,255));
+        menuPanelBG.setBackground(new Color(115, 138, 110));
+        menuItemLabel.setForeground(new Color(255, 255, 255));
         //history
-        historyPanelBG.setBackground(new Color(115,138,110));
-        historyLabel.setForeground(new Color(255,255,255));
+        historyPanelBG.setBackground(new Color(115, 138, 110));
+        historyLabel.setForeground(new Color(255, 255, 255));
     }//GEN-LAST:event_ordersPanelBGMouseClicked
 
     private void historyPanelBGMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_historyPanelBGMouseClicked
@@ -355,14 +429,14 @@ public class studentInterface extends javax.swing.JFrame {
         cl.show(parentPanel, "card4");
         setTitle("Purchase History");
         //history
-        historyPanelBG.setBackground(new Color(229,221,209));
-        historyLabel.setForeground(new Color(51,51,51));
+        historyPanelBG.setBackground(new Color(229, 221, 209));
+        historyLabel.setForeground(new Color(51, 51, 51));
         //menu
-        menuPanelBG.setBackground(new Color(115,138,110));
-        menuItemLabel.setForeground(new Color(255,255,255));
+        menuPanelBG.setBackground(new Color(115, 138, 110));
+        menuItemLabel.setForeground(new Color(255, 255, 255));
         //orders
-        ordersPanelBG.setBackground(new Color(115,138,110));
-        ordersLabel.setForeground(new Color(255,255,255));
+        ordersPanelBG.setBackground(new Color(115, 138, 110));
+        ordersLabel.setForeground(new Color(255, 255, 255));
     }//GEN-LAST:event_historyPanelBGMouseClicked
 
     private void menuPanelBGMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuPanelBGMouseClicked
@@ -370,15 +444,62 @@ public class studentInterface extends javax.swing.JFrame {
         cl.show(parentPanel, "card2");
         setTitle("Menu Items");
         //menu
-        menuPanelBG.setBackground(new Color(229,221,209));
-        menuItemLabel.setForeground(new Color(51,51,51));
+        menuPanelBG.setBackground(new Color(229, 221, 209));
+        menuItemLabel.setForeground(new Color(51, 51, 51));
         //history
-        historyPanelBG.setBackground(new Color(115,138,110));
-        historyPanelBG.setForeground(new Color(255,255,255));
+        historyPanelBG.setBackground(new Color(115, 138, 110));
+        historyPanelBG.setForeground(new Color(255, 255, 255));
         //orders
-        ordersPanelBG.setBackground(new Color(115,138,110));
-        ordersLabel.setForeground(new Color(255,255,255));
+        ordersPanelBG.setBackground(new Color(115, 138, 110));
+        ordersLabel.setForeground(new Color(255, 255, 255));
     }//GEN-LAST:event_menuPanelBGMouseClicked
+
+    private void findButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_findButtonMouseClicked
+        String searchText = searchItemField.getText().trim();
+        DefaultTableModel model = (DefaultTableModel) menuItemsTable.getModel();
+        model.setRowCount(0);
+
+        // Determine the sorting rule based on ComboBox selection
+        String orderBy = " ORDER BY item_id ASC"; // Default fallback
+        int selectedSortIndex = sortComboBox.getSelectedIndex();
+
+        switch (selectedSortIndex) {
+            case 0: // Name: A - Z
+                orderBy = " ORDER BY name ASC";
+                break;
+            case 1: // Name: Z - A
+                orderBy = " ORDER BY name DESC";
+                break;
+            case 2: // Price: ASCEND
+                orderBy = " ORDER BY price ASC";
+                break;
+            case 3: // Price: DESCEND
+                orderBy = " ORDER BY price DESC";
+                break;
+        }
+
+        String query = "SELECT item_id, name, category, price, stock_quantity, is_available FROM menu_items WHERE name LIKE ?" + orderBy;
+
+        try (PreparedStatement pst = DB.con.prepareStatement(query)) {
+            pst.setString(1, "%" + searchText + "%");
+
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    Object[] row = {
+                        rs.getInt("item_id"), // Column 0: Item ID
+                        rs.getString("name"), // Column 1: Item Name
+                        rs.getString("category"), // Column 2: Category
+                        rs.getDouble("price"), // Column 3: Price
+                        rs.getInt("stock_quantity"), // Column 4: Stock Quantity
+                        rs.getBoolean("is_available") // Column 5: is Available (Boolean)
+                    };
+                    model.addRow(row);
+                }
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Search/Sort Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_findButtonMouseClicked
 
     public static void main(String args[]) {
 
@@ -386,24 +507,25 @@ public class studentInterface extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton findButton;
     private javax.swing.JLabel historyLabel;
     private javax.swing.JPanel historyPanel;
     private javax.swing.JPanel historyPanelBG;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel menuItemLabel;
     private javax.swing.JPanel menuItemsPanel;
+    private javax.swing.JTable menuItemsTable;
     private javax.swing.JPanel menuPanelBG;
     private javax.swing.JPanel orderPanel;
     private javax.swing.JLabel ordersLabel;
     private javax.swing.JPanel ordersPanelBG;
     private javax.swing.JPanel parentPanel;
+    private javax.swing.JTextField searchItemField;
+    private javax.swing.JComboBox<String> sortComboBox;
     private javax.swing.JLabel studentFirstChar;
     private javax.swing.JLabel studentFirstname;
     // End of variables declaration//GEN-END:variables

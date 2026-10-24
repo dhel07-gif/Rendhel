@@ -703,8 +703,8 @@ public class mainPage extends javax.swing.JFrame {
     }//GEN-LAST:event_studentLoginButtonMouseClicked
 
     private void CreateAccountPaneltoButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CreateAccountPaneltoButtonMouseClicked
-        createStudentAccount cAF = new createStudentAccount();
-        cAF.setVisible(true);
+        CreateAccount CA = new CreateAccount();
+        CA.setVisible(true);
     }//GEN-LAST:event_CreateAccountPaneltoButtonMouseClicked
 
     private void CreateAccountPaneltoButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CreateAccountPaneltoButtonMouseEntered

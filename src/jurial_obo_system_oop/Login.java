@@ -1,3 +1,4 @@
+
 package jurial_obo_system_oop;
 
 import java.sql.Connection;
@@ -8,6 +9,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
+import javax.swing.JOptionPane;
+
+import javax.swing.JOptionPane;
+
 import javax.swing.JOptionPane;
 
 public class Login {
@@ -158,8 +165,8 @@ public class Login {
                     if (rl.equalsIgnoreCase("Admin")) {
                         JOptionPane.showMessageDialog(null, "Logged in Successfully!");
                         loginPage.dispose();
-                        sample home = new sample();
-                        home.setVisible(true);
+                        //sample home = new sample();
+                        //home.setVisible(true);
                     } else {
                         JOptionPane.showMessageDialog(null, "Access Denied! This login is restricted to Admin only.");
                     }

@@ -4,14 +4,14 @@ package jurial_obo_system_oop;
  *
  * @author ACER
  */
-public class adminPage extends javax.swing.JFrame {
+public class Admin extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(adminPage.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Admin.class.getName());
 
     /**
      * Creates new form adminPage
      */
-    public adminPage() {
+    public Admin() {
         initComponents();
     }
 
@@ -62,7 +62,7 @@ public class adminPage extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new adminPage().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new Admin().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

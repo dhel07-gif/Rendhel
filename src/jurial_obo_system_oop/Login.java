@@ -20,9 +20,9 @@ public class Login {
     PreparedStatement ps;
     ResultSet rs;
 
-    private final mainPage loginPage;
+    private final MainPage loginPage;
 
-    public Login(mainPage loginPage) {
+    public Login(MainPage loginPage) {
         this.loginPage = loginPage;
     }
     
@@ -40,9 +40,9 @@ public class Login {
             JOptionPane.showMessageDialog(null, "Account Created Successfully!");
 
         } catch (ClassNotFoundException ex) {
-            System.getLogger(createStudentAccount.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            System.getLogger(CreateAccount.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         } catch (SQLException ex) {
-            System.getLogger(createStudentAccount.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            System.getLogger(CreateAccount.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
     }
     

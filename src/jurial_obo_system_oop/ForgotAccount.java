@@ -4,14 +4,14 @@ package jurial_obo_system_oop;
  *
  * @author ACER
  */
-public class forgotAccountForm extends javax.swing.JFrame {
+public class ForgotAccount extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(forgotAccountForm.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ForgotAccount.class.getName());
 
     /**
      * Creates new form forgotAccountForm
      */
-    public forgotAccountForm() {
+    public ForgotAccount() {
         initComponents();
     }
 
@@ -62,7 +62,7 @@ public class forgotAccountForm extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new forgotAccountForm().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new ForgotAccount().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

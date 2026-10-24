@@ -12,14 +12,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
-public class createStudentAccount extends javax.swing.JFrame {
+public class CreateAccount extends javax.swing.JFrame {
 
     String[] defFields = {"Name", "Username", "Password", "Confirm Password"};
     DB_CONNECTION DB = new DB_CONNECTION();
 
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(createStudentAccount.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(CreateAccount.class.getName());
 
-    public createStudentAccount() {
+    public CreateAccount() {
         //setUndecorated(true);
         initComponents();
         setResizable(false);
@@ -413,7 +413,7 @@ public class createStudentAccount extends javax.swing.JFrame {
 
     public static void main(String args[]) {
 
-        java.awt.EventQueue.invokeLater(() -> new createStudentAccount().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new CreateAccount().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

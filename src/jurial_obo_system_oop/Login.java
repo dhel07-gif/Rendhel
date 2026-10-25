@@ -27,9 +27,9 @@ public class Login {
     PreparedStatement ps;
     ResultSet rs;
 
-    private final mainPage loginPage;
+    private final LoginPage loginPage;
 
-    public Login(mainPage loginPage) {
+    public Login(LoginPage loginPage) {
         this.loginPage = loginPage;
     }
     

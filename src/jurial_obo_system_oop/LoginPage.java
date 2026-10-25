@@ -8,15 +8,15 @@ import java.sql.SQLException;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-public class mainPage extends javax.swing.JFrame {
+public class LoginPage extends javax.swing.JFrame {
 
     String[] defUser = {"Username", "Admin Username"};
     String[] defPass = {"Password", "Admin Password"};
     DB_CONNECTION DB = new DB_CONNECTION();
     Color beige = new Color(229, 221, 209);
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(mainPage.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginPage.class.getName());
 
-    public mainPage() {
+    public LoginPage() {
         //setUndecorated(true);
         initComponents();
         setResizable(false);
@@ -304,7 +304,7 @@ public class mainPage extends javax.swing.JFrame {
             }
         });
 
-        studentLoginButton.setBackground(java.awt.Color.orange);
+        studentLoginButton.setBackground(new java.awt.Color(255, 200, 0));
         studentLoginButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 studentLoginButtonMouseClicked(evt);
@@ -449,7 +449,7 @@ public class mainPage extends javax.swing.JFrame {
             }
         });
 
-        adminLoginButton.setBackground(java.awt.Color.orange);
+        adminLoginButton.setBackground(new java.awt.Color(255, 200, 0));
         adminLoginButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 adminLoginButtonMouseClicked(evt);
@@ -549,7 +549,7 @@ public class mainPage extends javax.swing.JFrame {
             }
         });
 
-        staffLoginButton.setBackground(java.awt.Color.orange);
+        staffLoginButton.setBackground(new java.awt.Color(255, 200, 0));
         staffLoginButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 staffLoginButtonMouseClicked(evt);
@@ -919,12 +919,12 @@ public class mainPage extends javax.swing.JFrame {
     }//GEN-LAST:event_adminPasswordFocusGained
 
     public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(() -> new mainPage().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new LoginPage().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel AdminPanel;
-    private javax.swing.JPanel CreateAccountPaneltoButton;
+    private Panel_Shapes.RoundPanel CreateAccountPaneltoButton;
     private javax.swing.JLabel LoginLabel;
     private javax.swing.JLabel LoginLabel1;
     private javax.swing.JLabel LoginLabel2;
